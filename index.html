@@ -1,1 +1,884 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProstoKątna Pizza – Zamkowa 6, Tarnowskie Góry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0e0e0e;
+      --surface: #161616;
+      --surface2: #1e1e1e;
+      --red: #e02020;
+      --red-dark: #b01818;
+      --gold: #e8a020;
+      --gold-light: #f5c04a;
+      --text: #f0ede8;
+      --muted: #888680;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
 
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .font-display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; }
+
+    /* ── GEOMETRIC PATTERN ── */
+    .geo-bg {
+      background-image:
+        linear-gradient(rgba(224,32,32,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224,32,32,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(14,14,14,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(232,160,32,0.12);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+    .nav-logo span { color: var(--red); }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--red); color: #fff;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 8px 18px; border-radius: 2px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--red-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 50%, rgba(224,32,32,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 80% at 10% 80%, rgba(232,160,32,0.06) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-rect {
+      position: absolute;
+      border: 1px solid rgba(232,160,32,0.15);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; padding: 120px 24px 80px;
+      position: relative; z-index: 2;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,160,32,0.1);
+      border: 1px solid rgba(232,160,32,0.3);
+      color: var(--gold); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 2px; margin-bottom: 28px;
+    }
+    .hero-badge::before { content: '★'; font-size: 0.8rem; }
+    .hero-h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.4rem, 9vw, 9rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+    .hero-h1 em { font-style: normal; color: var(--red); }
+    .hero-h1 .gold { color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 540px;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 40px; }
+    .btn-primary {
+      background: var(--red); color: #fff;
+      font-weight: 700; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 16px 32px; border-radius: 2px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      border: 1.5px solid var(--gold);
+      font-weight: 700; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 16px 32px; border-radius: 2px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { background: rgba(232,160,32,0.1); transform: translateY(-2px); }
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      flex-wrap: wrap;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem; color: var(--red); letter-spacing: 0.04em;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ── SECTION SHARED ── */
+    section { position: relative; }
+    .section-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: 0.03em;
+    }
+    .section-title .accent { color: var(--gold); }
+
+    /* ── WHY ── */
+    .why { background: var(--surface); padding: 96px 0; }
+    .why-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .why-header { margin-bottom: 60px; }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .why-card {
+      background: var(--surface2);
+      padding: 44px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s;
+    }
+    .why-card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--red);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.35s;
+    }
+    .why-card:hover { transform: translateY(-4px); }
+    .why-card:hover::before { transform: scaleX(1); }
+    .why-icon {
+      width: 56px; height: 56px;
+      background: rgba(224,32,32,0.1);
+      border: 1px solid rgba(224,32,32,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 24px; border-radius: 2px;
+    }
+    .why-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: 0.04em; margin-bottom: 12px;
+    }
+    .why-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── MENU ── */
+    .menu-sec { padding: 96px 0; background: var(--bg); }
+    .menu-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .menu-header { margin-bottom: 60px; }
+    .menu-cat-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+    }
+    .menu-cat-label::after {
+      content: ''; flex: 1; height: 1px; background: rgba(232,160,32,0.2);
+    }
+    .menu-pizzas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .menu-card {
+      background: var(--surface);
+      padding: 32px 24px;
+      position: relative; overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.03);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .menu-card:hover { transform: translateY(-3px); border-color: rgba(232,160,32,0.2); }
+    
+    .menu-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: 0.04em; margin-bottom: 8px;
+      color: #fff;
+    }
+    .menu-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+    
+    .price-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface2);
+      padding: 10px 14px;
+      border-radius: 2px;
+      border-left: 3px solid var(--gold);
+    }
+    .price-size { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .price-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--text); }
+
+    .menu-drinks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .drink-card {
+      background: var(--surface);
+      padding: 24px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.03);
+      transition: transform 0.2s;
+    }
+    .drink-card:hover { transform: translateY(-2px); border-color: rgba(224,32,32,0.2); }
+    .drink-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: 0.04em; margin-bottom: 4px;
+      color: #fff;
+    }
+    .drink-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+    .drink-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--gold); flex-shrink: 0; margin-left: 16px; }
+
+    /* ── REVIEWS ── */
+    .reviews { background: var(--surface); padding: 96px 0; }
+    .reviews-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .reviews-header { margin-bottom: 60px; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .review-card {
+      background: var(--surface2);
+      padding: 36px 30px;
+      position: relative;
+    }
+    .review-card::before {
+      content: '"';
+      position: absolute; top: 20px; right: 24px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6rem; color: rgba(224,32,32,0.08);
+      line-height: 1;
+    }
+    .stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 16px; letter-spacing: 2px; }
+    .review-text {
+      font-size: 0.92rem; color: var(--text); line-height: 1.7;
+      font-weight: 300; font-style: italic; margin-bottom: 24px;
+    }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .reviewer-avatar {
+      width: 40px; height: 40px; border-radius: 2px;
+      background: var(--red); display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: #fff; flex-shrink: 0;
+    }
+    .reviewer-name { font-weight: 700; font-size: 0.88rem; }
+    .reviewer-meta { font-size: 0.76rem; color: var(--muted); }
+    .reviews-summary {
+      margin-top: 2px;
+      background: linear-gradient(90deg, rgba(224,32,32,0.12), rgba(232,160,32,0.08));
+      border: 1px solid rgba(232,160,32,0.15);
+      padding: 28px 36px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    }
+    .big-score {
+      font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--gold); line-height: 1;
+    }
+
+    /* ── CONTACT ── */
+    .contact { padding: 96px 0; background: var(--bg); }
+    .contact-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 60px; }
+    .contact-info { background: var(--surface); padding: 48px 40px; }
+    .contact-info h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: 0.04em; margin-bottom: 32px;
+      color: var(--gold);
+    }
+    .contact-row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 28px; }
+    .contact-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: rgba(224,32,32,0.1); border: 1px solid rgba(224,32,32,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; border-radius: 2px;
+    }
+    .contact-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .contact-value { font-size: 1rem; font-weight: 500; color: var(--text); }
+    .contact-value a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+    .contact-value a:hover { color: var(--red); }
+    
+    .hours-list { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 280px; margin-top: 8px; }
+    .hour-item { display: flex; justify-content: space-between; font-size: 0.9rem; }
+    .hour-day { color: var(--muted); }
+    .hour-time { color: var(--text); font-weight: 500; }
+    .hour-item.closed .hour-time { color: var(--red); }
+
+    .map-placeholder {
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      min-height: 400px;
+      border-left: 2px solid rgba(232,160,32,0.15);
+      position: relative; overflow: hidden;
+    }
+    .map-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(232,160,32,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,160,32,0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .map-pin { font-size: 3rem; filter: drop-shadow(0 0 20px rgba(224,32,32,0.5)); }
+    .map-address { font-size: 1rem; font-weight: 500; text-align: center; }
+    .map-cta {
+      background: var(--red); color: #fff;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 12px 24px; border-radius: 2px; text-decoration: none;
+      margin-top: 8px; display: inline-block; transition: background 0.2s;
+    }
+    .map-cta:hover { background: var(--red-dark); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #080808;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .footer-logo span { color: var(--red); }
+    .footer-sub { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 1024px) {
+      .menu-pizzas { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .menu-pizzas { grid-template-columns: 1fr; }
+      .menu-drinks { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .map-placeholder { min-height: 260px; }
+      .nav-links { display: none; }
+      .hero-stats { gap: 24px; }
+    }
+    @media (max-width: 600px) {
+      .hero-btns { flex-direction: column; }
+      .btn-primary, .btn-outline { justify-content: center; }
+      .reviews-summary { flex-direction: column; gap: 12px; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-inner > * {
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero-inner > *:nth-child(1) { animation-delay: 0.05s; }
+    .hero-inner > *:nth-child(2) { animation-delay: 0.15s; }
+    .hero-inner > *:nth-child(3) { animation-delay: 0.25s; }
+    .hero-inner > *:nth-child(4) { animation-delay: 0.35s; }
+    .hero-inner > *:nth-child(5) { animation-delay: 0.45s; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Prosto<span>Kątna</span> Pizza</div>
+    <div class="nav-links">
+      <a href="#dlaczego">Dlaczego my?</a>
+      <a href="#menu">Menu</a>
+      <a href="#opinie">Opinie</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+    <a href="tel:722720000" class="nav-cta">📞 722 720 000</a>
+  </div>
+</nav>
+
+<section class="hero geo-bg">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-rect" style="top:15%; right:6%; width:180px; height:90px; opacity:0.4;"></div>
+  <div class="hero-rect" style="top:22%; right:10%; width:100px; height:50px; border-color:rgba(224,32,32,0.2);"></div>
+  <div class="hero-rect" style="bottom:20%; right:4%; width:240px; height:120px; opacity:0.2;"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">⭐ 4.7 / 5 · Zamkowa 6 · Tarnowskie Góry</div>
+    <h1 class="hero-h1">
+      Najlepszy smak<br>
+      <em>w prostej</em> linii<br>
+      <span class="gold">z Zamkowej.</span>
+    </h1>
+    <p class="hero-sub">
+      Koniec z nudną, okrągłą pizzą.<br>
+      <strong>ProstoKątna Pizza</strong> to unikalny kształt, wyborne ciasto i składniki premium –
+      prosto z pieca, prosto na Twój stół w Tarnowskich Górach.
+    </p>
+    <div class="hero-btns">
+      <a href="tel:722720000" class="btn-primary">📞 Zadzwoń i zamów</a>
+      <a href="#menu" class="btn-outline">▼ Zobacz menu</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">4.7★</div>
+        <div class="stat-label">Ocena Google</div>
+      </div>
+      <div>
+        <div class="stat-num">190+</div>
+        <div class="stat-label">Prawdziwych opinii</div>
+      </div>
+      <div>
+        <div class="stat-num">ul. Zamkowa 6</div>
+        <div class="stat-label">Tarnowskie Góry</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why" id="dlaczego">
+  <div class="why-inner">
+    <div class="why-header">
+      <div class="section-label">Wyróżnik</div>
+      <h2 class="section-title">Dlaczego <span class="accent">ProstoKątna?</span></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">▭</div>
+        <h3>Unikalny Kształt</h3>
+        <p>Prostokątna pizza to nie chwyt marketingowy – to przemyślany kształt, który idealnie sprawdza się podczas wspólnego biesiadowania. Każdy kawałek jest równy, każda porcja uczciwa.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🌾</div>
+        <h3>Wyborne Ciasto</h3>
+        <p>Nasza receptura ciasta to efekt pasji i wielu miesięcy doskonalenia. Chrupiące z zewnątrz, puszyste w środku – mieszkańcy Tarnowskich Gór pokochali je od pierwszego kawałka.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">✦</div>
+        <h3>Najwyższa Jakość</h3>
+        <p>Żadnych skrótów. Tylko staranne, premium składniki wybierane przez prawdziwych pasjonatów smaku. Bo dobra pizza zasługuje na dobre towarzystwo – i dobre produkty.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu-sec" id="menu">
+  <div class="menu-inner">
+    <div class="menu-header">
+      <div class="section-label">Nasza oferta</div>
+      <h2 class="section-title">Zajrzyj do <span class="accent">Menu</span></h2>
+    </div>
+
+    <div class="menu-cat-label">Pizze Prostokątne</div>
+    <div class="menu-pizzas">
+      <div class="menu-card">
+        <div>
+          <h3>Margherita</h3>
+          <p>Sos pomidorowy, mozzarella.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">13 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">29 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Capricciosa</h3>
+          <p>Sos pomidorowy, mozzarella, szynka cotto, pieczarki.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">17 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">35 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Salami Klasyczne</h3>
+          <p>Sos pomidorowy, mozzarella, salami.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">19 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">37 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Salami Ostre</h3>
+          <p>Sos pomidorowy, mozzarella, salami spianata.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">19 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">37 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Ananas</h3>
+          <p>Sos pomidorowy, mozzarella, szynka cotto, ananas.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">20 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">39 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Nduja</h3>
+          <p>Sos pomidorowy, mozzarella, ricotta, włoska kiełbaska nduja.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">21 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">41 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Diavola</h3>
+          <p>Sos pomidorowy, mozzarella, salami spianata, włoska kiełbaska nduja, papryczki jalapeño.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">22 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">43 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Wiejska</h3>
+          <p>Sos pomidorowy, mozzarella, boczek, kabanos, pieczarki, cebula.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">22 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">43 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Góralska</h3>
+          <p>Sos pomidorowy, mozzarella, ser góralski, boczek, żurawina.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">23 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">45 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Parma</h3>
+          <p>Sos pomidorowy, mozzarella, parmezan, szynka parmeńska, rukola, pomidorki koktajlowe.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">23 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">45 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Sery i Miód</h3>
+          <p>Ser biały, mozzarella, gorgonzola, ser pleśniowy, orzechy włoskie, gruszka, miód.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">27 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">49 PLN</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div>
+          <h3>Pistacjowa</h3>
+          <p>Sos biały, mozzarella, sos pistacjowy, pistacje, mortadela, ricotta.</p>
+        </div>
+        <div class="price-box">
+          <div>
+            <div class="price-size">24x18 cm</div>
+            <div class="price-val">27 PLN</div>
+          </div>
+          <div class="text-right">
+            <div class="price-size">40x22 cm</div>
+            <div class="price-val">49 PLN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-sm text-center tracking-wide" style="color: var(--muted); margin-bottom: 50px;">
+      *sos 3 PLN (czosnkowy, pomidorowy, ketchup, oliwa) – jeden gratis &nbsp;|&nbsp; +opakowanie na wynos 2 PLN
+    </div>
+
+    <div>
+      <div class="menu-cat-label">Napoje</div>
+      <div class="menu-drinks">
+        <div class="drink-card">
+          <div>
+            <h3>Woda (Karafka)</h3>
+            <p>Świeża woda podawana w eleganckiej karafce.</p>
+          </div>
+          <div class="drink-price">Gratis</div>
+        </div>
+        <div class="drink-card">
+          <div>
+            <h3>Napój Turtamek</h3>
+            <p>Turecki nektar owocowy, dostępne różne smaki.</p>
+          </div>
+          <div class="drink-price">5 PLN</div>
+        </div>
+        <div class="drink-card">
+          <div>
+            <h3>Lemoniada Tomarchio</h3>
+            <p>Tradycyjne włoskie napoje gazowane bezalkoholowe, różne smaki.</p>
+          </div>
+          <div class="drink-price">8 PLN</div>
+        </div>
+        <div class="drink-card">
+          <div>
+            <h3>Lemoniada Szklanka (430ml)</h3>
+            <p>Pyszna domowa lemoniada owocowa.</p>
+          </div>
+          <div class="drink-price">16 PLN</div>
+        </div>
+        <div class="drink-card">
+          <div>
+            <h3>Lemoniada Dzbanek (1L)</h3>
+            <p>Idealna porcja do dzielenia się ze znajomymi (zapytaj obsługę o smaki).</p>
+          </div>
+          <div class="drink-price">29 PLN</div>
+        </div>
+        <div class="drink-card">
+          <div>
+            <h3>Piwo Zero % / Kraftowe</h3>
+            <p>Szeroki wybór piw bezalkoholowych oraz regionalnych piw kraftowych (różne smaki).</p>
+          </div>
+          <div class="drink-price">15 PLN</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews" id="opinie">
+  <div class="reviews-inner">
+    <div class="reviews-header">
+      <div class="section-label">Opinie klientów</div>
+      <h2 class="section-title">Mówią o nas <span class="accent">mieszkańcy TG</span></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">Zdecydowanie moja ulubiona miejscówka na pizzę w TG. Wpadam tu regularnie od dłuższego czasu i szczerze mówiąc, ani razu się nie zawiodłem.</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">M</div>
+          <div>
+            <div class="reviewer-name">Michał</div>
+            <div class="reviewer-meta">Opinia z Google · 3 miesiące temu</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">Przepyszna pizza, super ciasto ♥️♥️ polecam do zestawu herbatę zimową i włoską lemoniadę 👌 czas oczekiwania krótki, bardzo miła obsługa i przytulny lokal.</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">T</div>
+          <div>
+            <div class="reviewer-name">Teresa Job</div>
+            <div class="reviewer-meta">Opinia z Google · 2 miesiące temu</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">Pizza z dowozem. Pyszna, przystępna cenowo i gorąca. Składniki bardzo dobrej jakości, ciasto wyborne. Bardzo miły Pan dowożący. Bardzo polecam.</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">K</div>
+          <div>
+            <div class="reviewer-name">Kasia L</div>
+            <div class="reviewer-meta">Opinia z Google · 3 miesiące temu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reviews-summary">
+      <div style="display:flex; align-items:center; gap:20px;">
+        <div class="big-score">4.7</div>
+        <div>
+          <div style="color:var(--gold); font-size:1.3rem; letter-spacing:3px;">★★★★★</div>
+          <div style="font-size:0.8rem; color:var(--muted); margin-top:4px;">Średnia z Google (191 opinii) i Pyszne.pl (4.9/5)</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--text);">Przetestuj nasz unikalny kształt</div>
+        <a href="tel:722720000" class="map-cta" style="margin-top:12px;">Zamów teraz</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="kontakt">
+  <div class="contact-inner">
+    <div>
+      <div class="section-label">Znajdź nas</div>
+      <h2 class="section-title">Kontakt & <span class="accent">Godziny</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>ProstoKątna Pizza</h3>
+
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Adres</div>
+            <div class="contact-value">ul. Zamkowa 6<br>42-600 Tarnowskie Góry</div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Telefon / Zamówienia</div>
+            <div class="contact-value"><a href="tel:722720000">722 720 000</a></div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <div class="contact-label">Godziny otwarcia</div>
+            <div class="hours-list">
+              <div class="hour-item closed"><span class="hour-day">Poniedziałek</span><span class="hour-time">Zamknięte</span></div>
+              <div class="hour-item closed"><span class="hour-day">Wtorek</span><span class="hour-time">Zamknięte</span></div>
+              <div class="hour-item"><span class="hour-day">Środa</span><span class="hour-time">11:00 – 21:00</span></div>
+              <div class="hour-item"><span class="hour-day">Czwartek</span><span class="hour-time">11:00 – 21:00</span></div>
+              <div class="hour-item"><span class="hour-day">Piątek</span><span class="hour-time">11:00 – 23:00</span></div>
+              <div class="hour-item"><span class="hour-day">Sobota</span><span class="hour-time">12:00 – 23:00</span></div>
+              <div class="hour-item"><span class="hour-day">Niedziela</span><span class="hour-time">13:00 – 22:00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:32px; padding-top:28px; border-top:1px solid rgba(255,255,255,0.06);">
+          <a href="tel:722720000" class="btn-primary" style="width:100%; justify-content:center;">📞 Zadzwoń i zamów teraz</a>
+        </div>
+      </div>
+
+      <div class="map-placeholder">
+        <div class="map-pin">📍</div>
+        <div class="map-address">
+          <strong>ProstoKątna Pizza</strong><br>
+          <span style="color:var(--muted); font-size:0.88rem;">ul. Zamkowa 6, Tarnowskie Góry</span>
+        </div>
+        <a href="https://maps.google.com/?q=ProstoK%C4%85tna+Pizza+Zamkowa+6+Tarnowskie+G%C3%B3ry" target="_blank" rel="noopener" class="map-cta">
+          Otwórz w Google Maps →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Prosto<span>Kątna</span> Pizza</div>
+  <p class="footer-sub">ul. Zamkowa 6 · 42-600 Tarnowskie Góry · tel. <a href="tel:722720000" style="color:var(--red);text-decoration:none;">722 720 000</a></p>
+  <p class="footer-sub" style="margin-top:8px; opacity:0.5;">© 2026 ProstoKątna Pizza. Wszelkie prawa zastrzeżone.</p>
+</footer>
+
+</body>
+</html>
